@@ -1,3 +1,11 @@
 .ng-cloak{
 	display: none !important;
 }
+
+.upvote{
+	color: green;
+}
+
+.downvote{
+	color: red;
+}
