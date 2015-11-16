@@ -34,7 +34,7 @@
       <input type="text" ng-required="true" ng-model="posts.newPost.imageUrl" id="imageUrl" name="imageUrl">
     </p>
     <p>
-      <label for="description">Description</label>
+      <label for="description">Description:</label>
       <input type="text" ng-required="true" ng-model="posts.newPost.description" id="description" name="description">
     </p>
     <p>
@@ -51,16 +51,18 @@
             <span ng-click="downvotes($index)" class="glyphicon glyphicon-chevron-down"></span>
             <!-- <span>ADD INTEGER USED IN THE CONTROLLER</span> -->
             <span ng-class="{upvote : data.votes > 0 , downvote : data.votes < 0}">{{data.votes}}</span>
-            TO PASS IN{{newComment}}
-            <button ng-click="">View Comment</button>
-            <button ng-click="commentForm()">New Comment</button>
+            TO PASS IN{{comment}}
+            <button ng-click="showAllComments(data)">View Comment</button>
+            <button ng-click="commentForm($index)">New Comment</button>
 
-            <form ng-submit="addC omment($index)" ng-show="commentForm($index)">
+            <form ng-submit="addComment(data, comment)" ng-show="data.showComment">
+
               <br/>
-              <label for="comment">Content</label>
-              <input type="text" id="comment" ng-model="newComment" name="content">
-              <button ng-click="addComment($index, newComment)">Add Comment</button>
+              <label for="comment">Content:</label>
+              <input type="text" id="comment" ng-model="comment.body" name="content">
+              <button type="submit">Add Comment</button>
             </form>
+
           </div>
         </div>
         <div class="col-xs-6">
@@ -70,6 +72,14 @@
           <p>{{rightNow | date:'EEEE , MMMM d yyyy'}}</p>
         </div>
         
+      </div>
+      <!-- ian messing around code -->
+      <div ng-show="data.allComments">
+        <ul>
+          <li ng-repeat="comment in data.comments track by $index">
+            {{comment.body}}
+          </li>
+        </ul>
       </div>
     </div>
   </div>
