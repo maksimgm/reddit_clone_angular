@@ -17,44 +17,69 @@
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 </head>
 <body>
-<div ng-controller="NewPostController">
-  <button ng-click="toggleForm()" >Add Post</button>
 
-  <form action="javascript:void(0)" name="newPost" ng-submit="addPost(posts.newPost)" ng-show="posts.new" nonvalidate>
-    <p>
+<div ng-controller="NewPostController">
+  <button ng-click="toggleForm()" class="col-xs-6 col-xs-offset-3" class="btn btn-info">Add Post</button><br><br>
+  <form action="javascript:void(0)" name="newPost" ng-submit="addPost(posts.newPost)" ng-show="posts.new" nonvalidate class="col-xs-10 col-xs-offset-1">
+    <div class="form-group">
       <label for="title">Title</label>
-      <input type="text" ng-required="true" ng-model="posts.newPost.title" id="title" name="title">
-    </p>
-    <p>
+      <input type="text" ng-required="true" ng-model="posts.newPost.title" id="title" name="title" class="form-control">
+    </div>
+    <div class="form-group">
       <label for="author">Author</label>
-      <input type="text" ng-required="true" ng-model="posts.newPost.author" id="author" name="author">
-    </p>
-    <p>
+      <input type="text" ng-required="true" ng-model="posts.newPost.author" id="author" name="author" class="form-control">
+    </div>
+    <div class="form-group">
       <label for="imageUrl">Image Url</label>
-      <input type="text" ng-required="true" ng-model="posts.newPost.imageUrl" id="imageUrl" name="imageUrl">
-    </p>
-    <p>
+      <input type="text" ng-required="true" ng-model="posts.newPost.imageUrl" id="imageUrl" name="imageUrl" class="form-control">
+    </div>
+    <div class="form-group">
       <label for="description">Description:</label>
-      <input type="text" ng-required="true" ng-model="posts.newPost.description" id="description" name="description">
-    </p>
-    <p>
-      <input type="submit" ng-click="toggleOff()">
-    </p>
+      <input type="text" ng-required="true" ng-model="posts.newPost.description" id="description" name="description" class="form-control">
+    </div>
+    <div>
+      <button type="submit" ng-click="toggleOff()" class="btn btn-success">Create Post</button>
+    </div>
   </form>
   <div>
-    <div ng-repeat="data in posts.data track by $index">
+    <div class="row">
+      <div class="col-xs-8 col-xs-offset-2">
+        <select name="Order" ng-model="orderVal" class="pull-left">
+          <option value="author">Author</option>
+          <option value="title">Title</option>
+          <option value="date">Date</option>
+        </select>
+        <div class="pull-right">
+          <label for="search">Search:</label>
+          <input type="text" ng-model="search" id="search">
+        </div>
+      </div>
+    </div>
+    <div ng-repeat="data in posts.data | orderBy: orderVal | filter: search" class="container well">
       <div class="row">
         <div class="col-xs-4">
-          <span class="pull-left">Image:</span>{{data.imageUrl}}
           <div>
-            <span ng-click="upvotes($index)" class="glyphicon glyphicon-chevron-up"></span>
-            <span ng-click="downvotes($index)" class="glyphicon glyphicon-chevron-down"></span>
-            <!-- <span>ADD INTEGER USED IN THE CONTROLLER</span> -->
-            <span ng-class="{upvote : data.votes > 0 , downvote : data.votes < 0}">{{data.votes}}</span>
-            TO PASS IN{{comment}}
-            <button ng-click="showAllComments(data)">View Comment</button>
-            <button ng-click="commentForm($index)">New Comment</button>
+            <img class="pull-left postImage" ng-src="{{data.imageUrl}}" alt="Image Post">
+            <!-- <span class="pull-left">Image:</span>{{data.imageUrl}} -->
+            <!-- {{data}}
+            {{posts.data}} -->
+          </div>
+          <div>
+            <button ng-click="showAllComments(data)" class="btn btn-info">View Comment</button><br>
+            <button ng-click="commentForm(data)" class="btn btn-success">New Comment</button>
+          </div>
+        </div>
 
+        <div class="col-xs-6">
+          <p><span>Title:</span>{{data.title}}
+            <span ng-click="upvotes(data)" class="votePadding glyphicon glyphicon-chevron-up"></span>
+            <span ng-click="downvotes(data)" class="votePadding glyphicon glyphicon-chevron-down"></span>
+            <!-- <span>ADD INTEGER USED IN THE CONTROLLER</span> -->
+            <span class="votesWrapper" ng-class="{upvote : data.votes > 0 , downvote : data.votes < 0}">{{data.votes}}</span><br>
+          </p>
+          <p><span>Author:</span>{{data.author}}</p>
+          <p><span>Description:</span>{{data.description}}</p>
+          <p>{{data.rightNow | date:'EEEE , MMMM d yyyy'}}</p>
             <form ng-submit="addComment(data, comment)" ng-show="data.showComment">
 
               <br/>
@@ -62,24 +87,14 @@
               <input type="text" id="comment" ng-model="comment.body" name="content">
               <button type="submit">Add Comment</button>
             </form>
-
+          <div ng-show="data.allComments">
+            <ul>
+              <li ng-repeat="comment in data.comments">
+                {{comment.body}}
+              </li>
+            </ul>
           </div>
         </div>
-        <div class="col-xs-6">
-          <p><span>Title:</span>{{data.title}}</p>
-          <p><span>Author:</span>{{data.author}}</p>
-          <p><span>description</span>{{data.description}}</p>
-          <p>{{rightNow | date:'EEEE , MMMM d yyyy'}}</p>
-        </div>
-        
-      </div>
-      <!-- ian messing around code -->
-      <div ng-show="data.allComments">
-        <ul>
-          <li ng-repeat="comment in data.comments track by $index">
-            {{comment.body}}
-          </li>
-        </ul>
       </div>
     </div>
   </div>

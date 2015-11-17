@@ -9,3 +9,21 @@
 .downvote{
 	color: red;
 }
+
+.postImage{
+	height: 200px;
+	width: 230px;
+	border-radius: 10px;
+	border: 3px snow solid;
+}
+
+.votePadding{
+	padding-left: 5px;
+}
+
+.votesWrapper{
+	border: 2px solid #66FFFF;
+	box-shadow: 3px 3px 3px;
+	display: inline-block;
+	padding: 3px;
+}

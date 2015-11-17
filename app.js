@@ -4,12 +4,13 @@ app.controller("NewPostController", function($scope) { // What's missing?
   $scope.posts = {}; // Store posts here. What is the data type?
   $scope.posts.data = [];
   $scope.posts.newPost = {};
-  $scope.rightNow = new Date();
   $scope.comment = {};
+
 
   $scope.addPost = function(newPost) {
     newPost.votes = 0;
     newPost.comments = [];
+    newPost.rightNow = new Date();
     newPost.showComment = false;
     newPost.allComments = false;
     // newPost.index = $scope.posts.data.length;
@@ -30,12 +31,12 @@ app.controller("NewPostController", function($scope) { // What's missing?
     }
   };
 
-  $scope.upvotes = function(index){
-    $scope.posts.data[index].votes++;
+  $scope.upvotes = function(post){
+    post.votes++;
   };
 
-  $scope.downvotes = function(index){
-    $scope.posts.data[index].votes--;
+  $scope.downvotes = function(post){
+    post.votes--;
   };
 
   $scope.addComment = function(data, comment){
@@ -45,16 +46,16 @@ app.controller("NewPostController", function($scope) { // What's missing?
     $scope.comment = {};
   };
 
-  $scope.commentForm = function(index){
+  $scope.commentForm = function(post){
     // newPost.showComment = true;
-    $scope.posts.data[index].showComment = true;
+    post.showComment = true;
   };
 
   $scope.showAllComments = function(data){
     data.allComments = !data.allComments;
   };
 
-
+  $scope.orderVal = '-votes';
 
 });
 
